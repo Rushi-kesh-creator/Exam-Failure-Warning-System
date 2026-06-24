@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Faculty Registration</title>
+</head>
+<body>
+
+    <h1>Faculty Registration</h1>
+
+    <form method="POST">
+
+        {{ form.hidden_tag() }}
+
+        {{ form.username.label() }}
+        {{ form.username() }}
+
+        <br><br>
+
+        {{ form.email.label() }}
+        {{ form.email() }}
+
+        <br><br>
+
+        {{ form.password1.label() }}
+        {{ form.password1() }}
+
+        <br><br>
+
+        {{ form.password2.label() }}
+        {{ form.password2() }}
+
+        <br><br>
+
+        {{ form.submit() }}
+
+    </form>
+
+</body>
+</html>

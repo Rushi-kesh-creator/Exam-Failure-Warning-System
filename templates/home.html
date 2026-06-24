@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Home
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-5 text-center">
+
+    <h1>AI Exam Failure Warning System</h1>
+
+    <p class="lead">
+        Predict students at risk of failing exams using Machine Learning.
+    </p>
+
+    <hr>
+
+    <a href="{{ url_for('register_page') }}"
+       class="btn btn-success btn-lg m-2">
+        Register Faculty
+    </a>
+
+    <a href="{{ url_for('login_page') }}"
+       class="btn btn-primary btn-lg m-2">
+        Login
+    </a>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Edit Subject Record
+{% endblock %}
+
+{% block content %}
+
+<div class="row justify-content-center">
+    <div class="col-md-8">
+
+        <div class="card shadow">
+
+            <div class="card-header bg-warning text-dark">
+                <h3 class="mb-0">Edit Subject Record</h3>
+            </div>
+
+            <div class="card-body">
+
+                <form method="POST">
+
+                    {{ form.hidden_tag() }}
+
+                    <div class="mb-3">
+                        {{ form.attendance.label(class="form-label") }}
+                        {{ form.attendance(class="form-control") }}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form.assignment1.label(class="form-label") }}
+                        {{ form.assignment1(class="form-control") }}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form.assignment2.label(class="form-label") }}
+                        {{ form.assignment2(class="form-control") }}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form.mid1.label(class="form-label") }}
+                        {{ form.mid1(class="form-control") }}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form.mid2.label(class="form-label") }}
+                        {{ form.mid2(class="form-control") }}
+                    </div>
+
+                    <div class="d-grid">
+                        {{ form.submit(class="btn btn-warning btn-lg") }}
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}
