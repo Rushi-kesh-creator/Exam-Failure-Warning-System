@@ -13,6 +13,16 @@ Students
 
             <h2 class="mb-4">Students List</h2>
 
+            <!-- Search Box -->
+            <form method="GET" class="mb-3">
+
+                <input type="text"
+                       name="search"
+                       class="form-control"
+                       placeholder="Search student by name">
+
+            </form>
+
             <table class="table table-striped table-hover table-bordered">
 
                 <thead>
@@ -37,13 +47,24 @@ Students
                         <td>{{ student.year }}</td>
                         <td>{{ student.section }}</td>
                         <td>{{ student.cgpa }}</td>
+
                         <td>
-                            <a href="{{ url_for('edit_student',student_id=student.id) }}" class="btn btn-warning btn-sm">Edit</a>
-                            <a href="{{ url_for('delete_student',student_id=student.id) }}"class="btn btn-danger btn-sm">Delete</a>
+                            <a href="{{ url_for('edit_student', student_id=student.id) }}"
+                               class="btn btn-warning btn-sm">
+                                Edit
+                            </a>
+
+                            <a href="{{ url_for('delete_student', student_id=student.id) }}"
+                               class="btn btn-danger btn-sm"
+                               onclick="return confirm('Are you sure you want to delete this student?')">
+                                Delete
+                            </a>
                         </td>
                     </tr>
                     {% endfor %}
+
                 </tbody>
+
             </table>
 
         </div>

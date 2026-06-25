@@ -8,26 +8,63 @@ Faculty Dashboard
 
 <div class="container mt-4">
 
-    <!-- Welcome Section -->
-    <div class="bg-dark text-white p-4 rounded shadow mb-5">
-        <h2>Welcome, {{ current_user.username }}</h2>
-        <p class="mb-0">
-            AI Exam Failure Early Warning System
+    <div class="text-center mb-4">
+        <h1>Faculty Dashboard</h1>
+        <p class="lead">
+            Welcome, <strong>{{ current_user.username }}</strong>
         </p>
     </div>
 
-    <!-- Dashboard Actions -->
+    <!-- Statistics Cards -->
+
+    <div class="row g-4 mb-4">
+
+        <div class="col-md-3">
+            <div class="card text-center shadow border-primary">
+                <div class="card-body">
+                    <h5>👨‍🎓 Total Students</h5>
+                    <h2>{{ total_students }}</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card text-center shadow border-success">
+                <div class="card-body">
+                    <h5>📚 Total Subjects</h5>
+                    <h2>{{ total_subjects }}</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card text-center shadow border-warning">
+                <div class="card-body">
+                    <h5>🤖 Predictions</h5>
+                    <h2>{{ total_predictions }}</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card text-center shadow border-danger">
+                <div class="card-body">
+                    <h5>⚠️ High Risk</h5>
+                    <h2>{{ high_risk_students }}</h2>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Feature Cards -->
+
     <div class="row g-4">
 
-        <!-- Add Student -->
         <div class="col-md-4">
-            <div class="card shadow border-0 h-100">
+            <div class="card shadow">
                 <div class="card-body text-center">
-                    <h1>👨‍🎓</h1>
-                    <h5 class="mt-3">Add Student</h5>
-                    <p class="text-muted">
-                        Register a new student into the system.
-                    </p>
+                    <h5>➕ Add Student</h5>
                     <a href="{{ url_for('create_student') }}"
                        class="btn btn-success">
                         Open
@@ -36,15 +73,10 @@ Faculty Dashboard
             </div>
         </div>
 
-        <!-- View Students -->
         <div class="col-md-4">
-            <div class="card shadow border-0 h-100">
+            <div class="card shadow">
                 <div class="card-body text-center">
-                    <h1>📋</h1>
-                    <h5 class="mt-3">View Students</h5>
-                    <p class="text-muted">
-                        Browse all registered students.
-                    </p>
+                    <h5>👥 View Students</h5>
                     <a href="{{ url_for('students_page') }}"
                        class="btn btn-primary">
                         Open
@@ -53,15 +85,10 @@ Faculty Dashboard
             </div>
         </div>
 
-        <!-- Add Subject -->
         <div class="col-md-4">
-            <div class="card shadow border-0 h-100">
+            <div class="card shadow">
                 <div class="card-body text-center">
-                    <h1>📚</h1>
-                    <h5 class="mt-3">Add Subject</h5>
-                    <p class="text-muted">
-                        Create a subject for students.
-                    </p>
+                    <h5>📖 Add Subject</h5>
                     <a href="{{ url_for('create_subject') }}"
                        class="btn btn-info">
                         Open
@@ -70,15 +97,10 @@ Faculty Dashboard
             </div>
         </div>
 
-        <!-- Add Subject Marks -->
         <div class="col-md-4">
-            <div class="card shadow border-0 h-100">
+            <div class="card shadow">
                 <div class="card-body text-center">
-                    <h1>📝</h1>
-                    <h5 class="mt-3">Add Subject Marks</h5>
-                    <p class="text-muted">
-                        Enter attendance and marks.
-                    </p>
+                    <h5>📝 Add Subject Marks</h5>
                     <a href="{{ url_for('add_subject') }}"
                        class="btn btn-warning">
                         Open
@@ -87,15 +109,10 @@ Faculty Dashboard
             </div>
         </div>
 
-        <!-- Subject Records -->
         <div class="col-md-4">
-            <div class="card shadow border-0 h-100">
+            <div class="card shadow">
                 <div class="card-body text-center">
-                    <h1>📊</h1>
-                    <h5 class="mt-3">Subject Records</h5>
-                    <p class="text-muted">
-                        View all entered subject records.
-                    </p>
+                    <h5>📋 Subject Records</h5>
                     <a href="{{ url_for('subject_records') }}"
                        class="btn btn-secondary">
                         Open
@@ -104,15 +121,10 @@ Faculty Dashboard
             </div>
         </div>
 
-        <!-- Prediction History -->
         <div class="col-md-4">
-            <div class="card shadow border-0 h-100">
+            <div class="card shadow">
                 <div class="card-body text-center">
-                    <h1>🤖</h1>
-                    <h5 class="mt-3">Prediction History</h5>
-                    <p class="text-muted">
-                        View PASS/FAIL prediction results.
-                    </p>
+                    <h5>🤖 Prediction History</h5>
                     <a href="{{ url_for('predictions_page') }}"
                        class="btn btn-dark">
                         Open
@@ -121,24 +133,130 @@ Faculty Dashboard
             </div>
         </div>
 
+        <div class="col-md-4">
+            <div class="card shadow">
+                <div class="card-body text-center">
+                    <h5>⚠️ High Risk Students</h5>
+                    <a href="{{ url_for('high_risk_students') }}"
+                       class="btn btn-danger">
+                        Open
+                    </a>
+                </div>
+            </div>
+        </div>
+
     </div>
 
-    <!-- Logout Button -->
-    <div class="text-center mt-5">
+    <!-- Recent Predictions -->
+
+    <div class="card shadow mt-5">
+
+        <div class="card-header">
+            <h5 class="mb-0">Recent Predictions</h5>
+        </div>
+
+        <div class="card-body">
+
+            <table class="table table-striped">
+
+                <thead>
+                    <tr>
+                        <th>Student</th>
+                        <th>Subject</th>
+                        <th>Result</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    {% for p in recent_predictions %}
+                    <tr>
+                        <td>{{ p.student.name }}</td>
+                        <td>{{ p.subject.subject_name }}</td>
+                        <td>
+                            {% if p.predicted_result == "FAIL" %}
+                                <span class="badge bg-danger">FAIL</span>
+                            {% else %}
+                                <span class="badge bg-success">PASS</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+    <div class="card shadow mt-4">
+        <div class="card-header">
+            <h5 class="mb-0">Pass / Fail Analytics</h5>
+        </div>
+        <div class="card-body text-center">
+            <div style="width:300px; height:300px; margin:auto;">
+                <canvas id="resultChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Export Button -->
+
+    <div class="mt-3">
+        <a href="{{ url_for('export_predictions') }}"
+           class="btn btn-success">
+            Export CSV
+        </a>
+    </div>
+
+    <!-- Logout -->
+
+    <div class="text-center mt-4 mb-5">
         <a href="{{ url_for('logout_page') }}"
-           class="btn btn-danger btn-lg px-4">
+           class="btn btn-danger btn-lg">
             Logout
         </a>
     </div>
 
-    <!-- Footer -->
-    <div class="text-center mt-4 text-muted">
-        <hr>
-        <p>
-            AI Exam Failure Early Warning System
-        </p>
-    </div>
-
 </div>
+{% endblock %}
+
+{% block scripts %}
+
+<script>
+
+document.addEventListener('DOMContentLoaded', function () {
+
+    const ctx = document.getElementById('resultChart');
+
+    new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: ['PASS', 'FAIL'],
+            datasets: [{
+                data: [
+                    {{ pass_count }},
+                    {{ fail_count }}
+                ],
+                backgroundColor: [
+                    '#198754',
+                    '#dc3545'
+                ]
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top'
+                }
+            }
+        }
+    });
+
+});
+
+</script>
 
 {% endblock %}

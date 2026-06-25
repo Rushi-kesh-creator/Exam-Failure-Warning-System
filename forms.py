@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField,IntegerField,FloatField,SelectField
-from wtforms.validators import DataRequired, Length, EqualTo, Email
+from wtforms.validators import DataRequired, Length, EqualTo, Email,NumberRange
 class FacultyRegistrationForm(FlaskForm):
     username = StringField(label='Username',validators=[DataRequired(), Length(min=3, max=30)])
     email = StringField(label='Email',validators=[DataRequired(),Email()])
@@ -17,16 +17,16 @@ class StudentForm(FlaskForm):
     branch = StringField(label='Branch',validators=[DataRequired()])
     year = IntegerField(label='Year',validators=[DataRequired()])
     section = StringField(label='Section',validators=[DataRequired()])
-    cgpa = FloatField(label='CGPA',validators=[DataRequired()])
+    cgpa = FloatField(label='CGPA',validators=[DataRequired(),NumberRange(min=0, max=10)])
     submit = SubmitField(label='Add Student')
 class SubjectForm(FlaskForm):
     student_id = SelectField('Student', coerce=int, validators=[DataRequired()])
     subject_id = SelectField('Subject', coerce=int, validators=[DataRequired()])
-    attendance = FloatField('Attendance', validators=[DataRequired()])
-    assignment1 = FloatField('assignment1', validators=[DataRequired()])
-    assignment2 = FloatField('assignment2', validators=[DataRequired()])
-    mid1 = FloatField('mid1', validators=[DataRequired()])
-    mid2 = FloatField('mid2', validators=[DataRequired()])
+    attendance = FloatField('Attendance', validators=[DataRequired(),NumberRange(min=0, max=100)])
+    assignment1 = FloatField('Assignment1', validators=[DataRequired(),NumberRange(min=0, max=3)])
+    assignment2 = FloatField('Assignment2', validators=[DataRequired(),NumberRange(min=0, max=3)])
+    mid1 = FloatField('Mid1', validators=[DataRequired(),NumberRange(min=0, max=24)])
+    mid2 = FloatField('Mid2', validators=[DataRequired(),NumberRange(min=0, max=24)])
     submit = SubmitField('Save')
 class AddSubjectForm(FlaskForm):
     subject_name = StringField('Subject Name',validators=[DataRequired()])
@@ -38,12 +38,12 @@ class EditStudentForm(FlaskForm):
     branch = StringField(label='Branch',validators=[DataRequired()])
     year = StringField(label='Year',validators=[DataRequired()])
     section = StringField(label='Section',validators=[DataRequired()])
-    cgpa = StringField(label='CGPA')
+    cgpa = FloatField(label='CGPA',validators=[DataRequired(),NumberRange(min=0, max=10)])
     submit = SubmitField(label='Update Student')
 class EditSubjectForm(FlaskForm):
-    attendance = FloatField('Attendance',validators=[DataRequired()])
-    assignment1 = FloatField('Assignment1',validators=[DataRequired()])
-    assignment2 = FloatField('Assignment2',validators=[DataRequired()])
-    mid1 = FloatField('Mid1',validators=[DataRequired()])
-    mid2 = FloatField('Mid2',validators=[DataRequired()])
+    attendance = FloatField('Attendance', validators=[DataRequired(),NumberRange(min=0, max=100)])
+    assignment1 = FloatField('Assignment1', validators=[DataRequired(),NumberRange(min=0, max=3)])
+    assignment2 = FloatField('Assignment2', validators=[DataRequired(),NumberRange(min=0, max=3)])
+    mid1 = FloatField('Mid1', validators=[DataRequired(),NumberRange(min=0, max=24)])
+    mid2 = FloatField('Mid2', validators=[DataRequired(),NumberRange(min=0, max=24)])
     submit = SubmitField('Update Record')

@@ -1,13 +1,14 @@
 import joblib
 import pandas as pd
+import csv
 from app import app
-from flask import render_template, redirect, url_for, flash
+from flask import render_template, redirect, url_for, flash,request,Response
 from flask_login import login_user, logout_user, login_required, current_user
 from forms import FacultyRegistrationForm,LoginForm,StudentForm,SubjectForm,AddSubjectForm,EditStudentForm,EditSubjectForm
 from models import User, Student, StudentSubject,Subject,Prediction
 from extensions import db
 
-model = joblib.load("student_failure_model.pkl")
+model = joblib.load("ml/student_failure_model.pkl")
 @app.route("/")
 @app.route("/home")
 def home_page():
@@ -49,7 +50,23 @@ def logout_page():
 @app.route('/faculty/dashboard')
 @login_required
 def faculty_dashboard():
-    return render_template('faculty_dashboard.html')
+    total_students = Student.query.count()
+    total_subjects = Subject.query.count()
+    total_predictions = Prediction.query.count()
+    high_risk_students = Prediction.query.filter_by(risk_level='HIGH').count()
+    recent_predictions = Prediction.query.order_by(Prediction.created_at.desc()).limit(5).all()
+    pass_count = Prediction.query.filter_by(predicted_result='PASS').count()
+    fail_count = Prediction.query.filter_by(predicted_result='FAIL').count()
+    return render_template(
+        'faculty_dashboard.html',
+        total_students=total_students,
+        total_subjects=total_subjects,
+        total_predictions=total_predictions,
+        high_risk_students=high_risk_students,
+        recent_predictions=recent_predictions,
+        pass_count=pass_count,
+        fail_count=fail_count
+    )
 
 @app.route('/student/create', methods=['GET', 'POST'])
 @login_required
@@ -65,7 +82,11 @@ def create_student():
 @app.route('/students')
 @login_required
 def students_page():
-    students = Student.query.all()
+    search = request.args.get('search')
+    if search:
+        students = Student.query.filter(Student.name.ilike(f'%{search}%')).all()
+    else:
+        students = Student.query.all()
     return render_template('students.html',students=students)
 @app.route('/add-subject', methods=['GET', 'POST'])
 @login_required
@@ -108,12 +129,17 @@ def subject_records():
 def predict_student(record_id):
     record = StudentSubject.query.get_or_404(record_id)
     student = Student.query.get(record.student_id)
+    higher_mid = max(record.mid1, record.mid2)
+    lower_mid = min(record.mid1, record.mid2)
+    internal_marks = round(
+        record.assignment1 +
+        record.assignment2 +
+        (0.8 * higher_mid) +
+        (0.2 * lower_mid)
+    )
     features = pd.DataFrame([{
+        "internal_marks": internal_marks,
         "attendance": record.attendance,
-        "assignment1": record.assignment1,
-        "assignment2": record.assignment2,
-        "mid1": record.mid1,
-        "mid2": record.mid2,
         "cgpa": student.cgpa
     }])
     prediction = model.predict(features)[0]
@@ -194,3 +220,33 @@ def delete_record(record_id):
     flash('Subject record deleted successfully!', 'success')
     return redirect(url_for('subject_records'))
 
+@app.route('/high-risk-students')
+@login_required
+def high_risk_students():
+    predictions = Prediction.query.filter_by(risk_level='HIGH').all()
+    return render_template('high_risk_students.html',predictions=predictions)
+
+@app.route('/analytics')
+@login_required
+def analytics():
+    pass_count = Prediction.query.filter_by(predicted_result='PASS').count()
+    fail_count = Prediction.query.filter_by(predicted_result='FAIL').count()
+    return render_template('analytics.html',pass_count=pass_count,fail_count=fail_count)
+
+@app.route('/export_predictions')
+@login_required
+def export_predictions():
+    predictions = Prediction.query.all()
+    print("Total Predictions:", len(predictions))
+    csv_data = "Student,Subject,Risk Level,Result\n"
+    for p in predictions:
+        csv_data += (
+            f"{p.student.name},"
+            f"{p.subject.subject_name},"
+            f"{p.risk_level},"
+            f"{p.predicted_result}\n"
+        )
+    return Response(
+        csv_data,
+        mimetype='text/csv',
+        headers={'Content-Disposition':'attachment; filename=predictions.csv'})

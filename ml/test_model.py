@@ -3,12 +3,16 @@ import pandas as pd
 
 model = joblib.load("student_failure_model.pkl")
 
+internal_marks = (
+    5 +
+    4 +
+    (0.8 * max(18,20)) +
+    (0.2 * min(18,20))
+)
+
 sample_student = pd.DataFrame([{
+    "internal_marks": internal_marks,
     "attendance": 85,
-    "assignment1": 5,
-    "assignment2": 4,
-    "mid1": 18,
-    "mid2": 20,
     "cgpa": 8.2
 }])
 

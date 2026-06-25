@@ -57,6 +57,17 @@ class StudentSubject(db.Model):
     assignment2 = db.Column(db.Float, nullable=False)
     mid1 = db.Column(db.Float, nullable=False)
     mid2 = db.Column(db.Float, nullable=False)
+
+    @property
+    def internal_marks(self):
+        higher_mid = max(self.mid1, self.mid2)
+        lower_mid = min(self.mid1, self.mid2)
+        return round(
+            self.assignment1 +
+            self.assignment2 +
+            (0.8 * higher_mid) +
+            (0.2 * lower_mid)
+            )
     def __repr__(self):
         return f"StudentSubject(Student={self.student_id}, Subject={self.subject_id})"
 

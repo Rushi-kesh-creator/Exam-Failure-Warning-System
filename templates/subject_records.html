@@ -21,6 +21,7 @@ Subject Records
                 <th>Assignment2</th>
                 <th>Mid1</th>
                 <th>Mid2</th>
+                <th>Internal Marks</th>
                 <th>Prediction</th>
                 <th>Actions</th>
             </tr>
@@ -37,6 +38,7 @@ Subject Records
                 <td>{{ record.assignment2 }}</td>
                 <td>{{ record.mid1 }}</td>
                 <td>{{ record.mid2 }}</td>
+                <td>{{ record.internal_marks }}</td>
                 <td>
                     <a href="{{ url_for('predict_student',record_id=record.id) }}"class="btn btn-danger btn-sm">Predict</a>
                 </td>
