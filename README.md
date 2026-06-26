@@ -128,32 +128,6 @@ The trained model is stored as:
 student_failure_model.pkl
 The Flask application loads this model using **Joblib** and performs real-time predictions whenever faculty members submit student academic data.
 
-## 📸 Screenshots
-
-### Login Page
-
-*Add screenshot here*
-
-### Faculty Dashboard
-
-*Add screenshot here*
-
-### Student Management
-
-*Add screenshot here*
-
-### Subject Management
-
-*Add screenshot here*
-
-### Prediction Result
-
-*Add screenshot here*
-
-### Prediction History
-
-*Add screenshot here*
-
 ## 🔮 Future Enhancements
 * Email notifications for students identified as at risk.
 * Data visualization dashboards using interactive charts.
