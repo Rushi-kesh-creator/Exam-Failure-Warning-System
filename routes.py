@@ -143,15 +143,18 @@ def predict_student(record_id):
         "cgpa": student.cgpa
     }])
     prediction = model.predict(features)[0]
+    probabilities = model.predict_proba(features)[0]
+    confidence = float(round(max(probabilities) * 100, 2))
     result = "PASS" if prediction == 1 else "FAIL"
-    risk_score = 0.9 if result == "FAIL" else 0.1
+    risk_score =confidence / 100
     risk_level = "HIGH" if result == "FAIL" else "LOW"
     new_prediction = Prediction(
         student_id=record.student_id,
         subject_id=record.subject_id,
         risk_score=risk_score,
         risk_level=risk_level,
-        predicted_result=result)
+        predicted_result=result,
+        confidence=confidence)
     db.session.add(new_prediction)
     db.session.commit()
     flash(f"Prediction Result: {result} ({risk_level} RISK)","success")
@@ -238,13 +241,14 @@ def analytics():
 def export_predictions():
     predictions = Prediction.query.all()
     print("Total Predictions:", len(predictions))
-    csv_data = "Student,Subject,Risk Level,Result\n"
+    csv_data = "Student,Subject,Risk Level,Result,Confidence\n"
     for p in predictions:
         csv_data += (
             f"{p.student.name},"
             f"{p.subject.subject_name},"
             f"{p.risk_level},"
-            f"{p.predicted_result}\n"
+            f"{p.predicted_result},"
+            f"{p.confidence}%\n"
         )
     return Response(
         csv_data,

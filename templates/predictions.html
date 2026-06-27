@@ -14,6 +14,7 @@
             <th>Subject</th>
             <th>Result</th>
             <th>Risk Level</th>
+            <th>Confidence</th>
         </tr>
     </thead>
     <tbody>
@@ -24,6 +25,7 @@
             <td>{{ p.subject.subject_name }}</td>
             <td>{{ p.predicted_result }}</td>
             <td>{{ p.risk_level }}</td>
+            <td>{{ p.confidence }}</td>
         </tr>
         {% endfor %}
     </tbody>

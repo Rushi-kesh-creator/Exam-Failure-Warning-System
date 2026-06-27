@@ -80,6 +80,7 @@ class Prediction(db.Model):
     risk_score = db.Column(db.Float, nullable=False)     # 0 to 1
     risk_level = db.Column(db.String(20), nullable=False) # LOW / MEDIUM / HIGH
     predicted_result = db.Column(db.String(10), nullable=True)  # PASS / FAIL
+    confidence = db.Column(db.Float, nullable=True)
     created_at = db.Column(db.DateTime, server_default=db.func.now())
     student = db.relationship('Student')
     subject = db.relationship('Subject')
